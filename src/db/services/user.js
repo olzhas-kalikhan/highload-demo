@@ -27,6 +27,16 @@ const incrementBalance = async ({ userId, by = 1 }) => {
   }
 };
 
-const userService = { incrementBalance };
+const createUserIfNotExists = async () => {
+  const [user] = await User.findOrCreate({
+    where: { id: 1 },
+    defaults: {
+      balance: 10000,
+    },
+  });
+  console.log({ balance: user.balance });
+};
+
+const userService = { incrementBalance, createUserIfNotExists };
 
 module.exports = userService;

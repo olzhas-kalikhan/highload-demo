@@ -9,15 +9,18 @@
   "scripts": {
     "format": "npx eslint . && npx prettier . --write",
     "watch": "cross-env NODE_ENV=development nodemon src/index.js",
-    "start": "cross-env NODE_ENV=production node src/index.js",
+    "prod:start": "npm run prod:migrate && cross-env NODE_ENV=production node src/index.js",
     "dev:migrate:up": "cross-env NODE_ENV=development npx sequelize-cli db:migrate",
     "dev:migrate:undo": "cross-env NODE_ENV=development npx sequelize-cli db:migrate:undo",
     "prod:migrate:up": "cross-env NODE_ENV=production npx sequelize-cli db:migrate",
     "prod:migrate:undo": "cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod:migrate": "cross-env NODE_ENV=production npx sequelize-cli db:migrate",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "load-test": "npx autocannon -c 100 -a 10000 -m PATCH  http://localhost:8080/users/1/balance/-2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "autocannon": "^8.0.0",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "globals": "^16.0.0",
