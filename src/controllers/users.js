@@ -9,17 +9,21 @@ const balanceHandlerParams = z.object({
 
 /** @type {import("@/type").HttpHandler} */
 const balanceHandler = async (req, res) => {
-  const result = balanceHandlerParams.safeParse(req.params);
+  const paramsResult = balanceHandlerParams.safeParse(req.params);
 
-  if (!result.success) {
+  if (!paramsResult.success) {
     return res
       .status(httpStatus.BadRequest)
-      .json({ error: result.error.format() });
+      .json({ error: paramsResult.error.format() });
   }
-  const { userId, amount } = result.data;
+  const { userId, amount } = paramsResult.data;
 
-  const newBalance = await userService.incrementBalance({ userId, by: amount });
-  res.status(httpStatus.OK).json({ newBalance });
+  const result = await userService.incrementBalance({ userId, by: amount });
+  if (!result) {
+    return res.sendStatus(httpStatus.BadRequest);
+  }
+  console.log(result);
+  res.status(httpStatus.OK).json(result);
 };
 
 const userController = {
