@@ -5,7 +5,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default defineConfig([
-  globalIgnores(["migrations", "node_modules"]),
+  globalIgnores(["migrations", "seeders", "node_modules"]),
   { files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
